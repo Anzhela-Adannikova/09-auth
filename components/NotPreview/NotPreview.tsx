@@ -9,6 +9,7 @@ type NoteParamsProps = {
 };
 
 export default function NotPreview({ note, onClose }: NoteParamsProps) {
+  const event = new Date(note.createdAt).toDateString();
   return (
     <div className={css.container}>
       <button className={css.backBtn} onClick={onClose}>
@@ -20,7 +21,7 @@ export default function NotPreview({ note, onClose }: NoteParamsProps) {
           <span className={css.tag}>{note.tag}</span>
         </div>
         <p className={css.content}>{note.content}</p>
-        <p className={css.date}>{note.createdAt}</p>
+        <p className={css.date}>{event}</p>
       </div>
     </div>
   );

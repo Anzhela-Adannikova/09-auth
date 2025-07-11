@@ -1,6 +1,17 @@
+"use client";
+
+import { useRouter } from "next/router";
 import css from "./SignInPage.module.css";
+import { useState } from "react";
 
 export default function SignIn() {
+  const router = useRouter();
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [error, setError] = useState();
+
+  const handleSubmit = async (event: ReactEvent<HTMLFormElement>) => {};
   return (
     <main className={css.mainContent}>
       <form className={css.form}>
