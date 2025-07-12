@@ -5,3 +5,8 @@ export interface User {
   username: string;
   avatar: string;
 }
+
+export interface AuthData {
+  email: string;
+  password: string;
+}

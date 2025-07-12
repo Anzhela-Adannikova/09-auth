@@ -1,3 +1,4 @@
+import AuthNavigation from "../AuthNavigation/AuthNavigation";
 import TagsMenu from "../TagsMenu/TagsMenu";
 import css from "./Header.module.css";
 import Link from "next/link";
@@ -15,7 +16,10 @@ export default function Header() {
               Home
             </Link>
           </li>
-          <li className={css.navigationItem}>{<TagsMenu />}</li>
+          <li className={css.navigationItem}>
+            <TagsMenu />
+          </li>
+          <AuthNavigation />
         </ul>
       </nav>
     </header>

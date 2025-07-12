@@ -23,7 +23,7 @@ export default function SignUP() {
       router.push("/profile");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
-        const message = error.response?.data?.massage || "Error";
+        const message = error.response?.data?.message || "Error";
         setError(message);
       } else {
         setError("Error");
