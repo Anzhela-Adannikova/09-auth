@@ -24,3 +24,17 @@ export const loginUser = async (data: AuthData): Promise<User> => {
   const res = await nextServer.post<User>("/auth/login", data);
   return res.data;
 };
+
+export const checkSession = async (): Promise<boolean> => {
+  const { data } = await nextServer(`/auth/session`);
+  return data.success;
+};
+
+export const getMe = async (): Promise<User> => {
+  const { data } = await nextServer(`/user/me`);
+  return data;
+};
+
+export const logOut = async () => {
+  await nextServer.post(`/auth/logout`);
+};

@@ -4,6 +4,7 @@
 import { Note } from "@/types/note";
 import axios from "axios";
 import { cookies } from "next/headers";
+import nextServer from "./api";
 
 const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
 
@@ -34,6 +35,16 @@ export const fetchNotes = async (
   });
   return res.data;
 };
+
+export async function checkServerSession() {
+  const cookieStore = await cookies();
+  const res = await nextServer.get("/auth/session", {
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
+  return res;
+}
 
 export const fetchNoteById = async (id: number): Promise<Note> => {
   const cookiesStore = await cookies();
