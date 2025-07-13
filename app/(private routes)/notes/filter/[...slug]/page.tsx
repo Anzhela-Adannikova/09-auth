@@ -1,6 +1,6 @@
-import { fetchNotes } from "@/lib/api";
-import NotesClient from "./Notes.client";
+import { fetchNotes } from "@/lib/api/serverApi";
 import { Metadata } from "next";
+import NotesClient from "./Notes.client";
 
 // type FilteredNotesPageProps = {
 //   params: { slug: string[] };

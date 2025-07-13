@@ -1,4 +1,3 @@
-// функцію для запиту на реєстрацію нового користувача
 "use client";
 
 import nextServer from "./api";
@@ -37,4 +36,9 @@ export const getMe = async (): Promise<User> => {
 
 export const logOut = async () => {
   await nextServer.post(`/auth/logout`);
+};
+
+export const updateUser = async (data: { username: string }): Promise<User> => {
+  const res = await nextServer.patch<User>("/auth/profile", data);
+  return res.data;
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import css from "./SignInPage.module.css";
 import { useState } from "react";
 import { isAxiosError } from "axios";
