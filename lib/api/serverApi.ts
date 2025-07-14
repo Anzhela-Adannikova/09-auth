@@ -12,26 +12,41 @@ export interface FetchNoteService {
 }
 
 // перевірка сесії
+// export async function checkServerSession(): Promise<{ user: User }> {
+//   const cookieStore = await cookies();
+//   const res = await nextServer.get("/auth/session", {
+//     headers: {
+//       Cookie: cookieStore.toString(),
+//     },
+//   });
+
+//   return res.data;
+// }
+
 export async function checkServerSession() {
   const cookieStore = await cookies();
-  const res = await nextServer.get("/auth/session", {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
-  });
-  return res;
+  try {
+    const res = await nextServer.get<User>("/auth/session", {
+      headers: {
+        Cookie: cookieStore.toString(),
+      },
+    });
+    return res.data;
+  } catch {
+    return null;
+  }
 }
 
-// отримування користувача після сесії
-export const getMeServer = async (): Promise<User> => {
-  const cookiesStore = await cookies();
-  const res = await nextServer.get<User>("/auth/me", {
-    headers: {
-      Cookie: cookiesStore.toString(),
-    },
-  });
-  return res.data;
-};
+// // отримування користувача після сесії
+// export const getMeServer = async (): Promise<User> => {
+//   const cookiesStore = await cookies();
+//   const res = await nextServer.get<User>("/auth/me", {
+//     headers: {
+//       Cookie: cookiesStore.toString(),
+//     },
+//   });
+//   return res.data;
+// };
 
 export const fetchNotes = async (
   page = 1,
