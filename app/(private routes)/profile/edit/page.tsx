@@ -1,34 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import css from "./EditProfilePage.module.css";
-import { User } from "@/types/user";
+
 import { useRouter } from "next/navigation";
-import { getMe, updateUser } from "@/lib/api/clientApi";
+import { updateUser } from "@/lib/api/clientApi";
 import Image from "next/image";
+import { useAuth } from "@/lib/store/authStore";
 
 export default function EditProfilePage() {
-  const [user, setUser] = useState<User | null>(null);
-  const [username, setUsername] = useState("");
+  const { user } = useAuth();
+  const setUser = useAuth((state) => state.setUser);
   const router = useRouter();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const currentUser = await getMe();
-        setUser(currentUser);
-        setUsername(currentUser.username);
-      } catch (error) {
-        console.log("Failed to load user:", error);
-      }
-    };
-    fetchUser();
-  }, []);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const username = formData.get("username") as string;
     try {
-      await updateUser({ username });
+      const user = await updateUser({ username });
+      setUser(user);
       router.push("/profile");
     } catch (error) {
       console.error("Failed to load user:", error);
@@ -60,10 +50,10 @@ export default function EditProfilePage() {
             <label htmlFor="username">Username:</label>
             <input
               id="username"
+              name="username"
               type="text"
               className={css.input}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              defaultValue={user.username}
             />
           </div>
 

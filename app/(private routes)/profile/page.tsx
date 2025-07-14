@@ -2,8 +2,7 @@ import Link from "next/link";
 import css from "./ProfilePage.module.css";
 import { Metadata } from "next";
 import Image from "next/image";
-import { checkServerSession } from "@/lib/api/serverApi";
-import { redirect } from "next/navigation";
+import { getMeServer } from "@/lib/api/serverApi";
 
 export const metadata: Metadata = {
   title: "User Profile | NoteHub",
@@ -25,11 +24,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Profile() {
-  const { user } = await checkServerSession();
+  const user = await getMeServer();
 
-  if (!user) {
-    redirect("sign-in");
-  }
   return (
     <main className={css.mainContent}>
       <div className={css.profileCard}>
@@ -42,7 +38,7 @@ export default async function Profile() {
         <div className={css.avatarWrapper}>
           {user?.avatar && (
             <Image
-              src={user.avatar || "/default-avatar.png"}
+              src={user.avatar}
               alt="User Avatar"
               width={120}
               height={120}

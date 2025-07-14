@@ -3,29 +3,27 @@
 import { useRouter } from "next/navigation";
 import css from "./SignInPage.module.css";
 import { useState } from "react";
-import { isAxiosError } from "axios";
 import { loginUser } from "@/lib/api/clientApi";
+import { useAuth } from "@/lib/store/authStore";
 
 export default function SignIn() {
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+  const setUser = useAuth((state) => state.setUser);
 
   const handleLogin = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
 
     try {
-      await loginUser({ email, password });
+      const user = await loginUser({ email, password });
+      setUser(user);
       router.push("/profile");
-    } catch (err) {
-      if (isAxiosError(err)) {
-        const message = err.response?.data?.message || "Login failed";
-        setError(message);
-      } else {
-        setError("Error");
-      }
+    } catch {
+      setErrorMessage("The login or password is incorrect.");
     }
   };
+
   return (
     <main className={css.mainContent}>
       <form action={handleLogin} className={css.form}>
@@ -59,7 +57,7 @@ export default function SignIn() {
           </button>
         </div>
 
-        <p className={css.error}>{error}</p>
+        <p className={css.error}>{errorMessage}</p>
       </form>
     </main>
   );

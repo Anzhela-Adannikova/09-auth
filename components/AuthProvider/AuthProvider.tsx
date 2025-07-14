@@ -25,7 +25,7 @@ const AuthProvider = ({ children }: Props) => {
     fetchSession();
   }, [clearAuth, setUser]);
 
-  return <>{children}</>;
+  return children;
 };
 
 export default AuthProvider;

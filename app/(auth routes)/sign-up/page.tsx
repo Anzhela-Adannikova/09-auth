@@ -4,12 +4,14 @@
 import { useRouter } from "next/navigation";
 import css from "./SignUpPage.module.css";
 import { useState } from "react";
-import axios from "axios";
+
 import { registerUser } from "@/lib/api/clientApi";
+import { useAuth } from "@/lib/store/authStore";
 
 export default function SignUP() {
   const router = useRouter();
-  const [error, setError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const setUser = useAuth((state) => state.setUser);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,19 +19,19 @@ export default function SignUP() {
     const formData = new FormData(event.currentTarget);
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
+    console.log({ email, password });
 
     try {
-      await registerUser({ email, password });
+      const user = await registerUser({ email, password });
+      setUser(user);
       router.push("/profile");
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        const message = error.response?.data?.message || "Error";
-        setError(message);
-      } else {
-        setError("Error");
-      }
+    } catch {
+      setErrorMessage(
+        "Registration failed. The account may already exist or an error occurred."
+      );
     }
   };
+
   return (
     <main className={css.mainContent}>
       <h1 className={css.formTitle}>Sign up</h1>
@@ -61,8 +63,8 @@ export default function SignUP() {
             Register
           </button>
         </div>
-        {error && <p className={css.error}>{error}</p>}
-        {/* <p className={css.error}>Error</p> */}
+
+        <p className={css.error}>{errorMessage}</p>
       </form>
     </main>
   );

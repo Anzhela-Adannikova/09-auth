@@ -5,7 +5,7 @@ import {
 } from "@tanstack/react-query";
 import NoteDetailsClient from "./NoteDetails.client";
 import { Metadata } from "next";
-import { fetchNoteById } from "@/lib/api/serverApi";
+import { fetchNoteByIdServer } from "@/lib/api/serverApi";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -15,15 +15,15 @@ export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
   const { id } = await params;
-  const parseId = Number(id);
-  const note = await fetchNoteById(parseId);
+
+  const note = await fetchNoteByIdServer(id);
   return {
     title: note.title,
     description: note.content,
     openGraph: {
       title: note.title,
       description: note.content.slice(0, 200),
-      url: `https://notehub.com/notes/${parseId}`,
+      url: `https://notehub.com/notes/${id}`,
       images: [
         {
           url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
@@ -38,12 +38,12 @@ export const generateMetadata = async ({
 
 const NoteDetails = async ({ params }: Props) => {
   const { id } = await params;
-  const parseId = Number(id);
+
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["note", parseId],
-    queryFn: () => fetchNoteById(parseId),
+    queryKey: ["note", id],
+    queryFn: () => fetchNoteByIdServer(id),
   });
 
   return (

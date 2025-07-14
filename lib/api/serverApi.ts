@@ -1,10 +1,7 @@
 import { Note } from "@/types/note";
-import axios from "axios";
 import { cookies } from "next/headers";
 import nextServer from "./api";
-import { User } from "@/types/user";
-
-const baseURL = `${process.env.NEXT_PUBLIC_API_URL}/api`;
+import { User, UserLogin } from "@/types/user";
 
 export interface FetchNoteService {
   notes: Note[];
@@ -58,7 +55,7 @@ export async function checkServerSession() {
 //   return res.data;
 // };
 
-export const fetchNotes = async (
+export const fetchNotesServer = async (
   page = 1,
   query = "",
   perPage = 12,
@@ -71,7 +68,7 @@ export const fetchNotes = async (
   if (query) params.search = query;
   if (tag && tag !== `All`) params.tag = tag;
 
-  const res = await axios.get<FetchNoteService>(`${baseURL}/notes`, {
+  const res = await nextServer.get<FetchNoteService>(`/notes`, {
     headers: {
       Cookie: cookiesStore.toString(),
     },
@@ -81,15 +78,24 @@ export const fetchNotes = async (
   return res.data;
 };
 
-export const fetchNoteById = async (id: number): Promise<Note> => {
+export const fetchNoteByIdServer = async (id: string): Promise<Note> => {
   const cookiesStore = await cookies();
-  const authCookie = cookiesStore.get("auth_token");
 
-  const res = await axios.get<Note>(`${baseURL}/notes/${id}`, {
+  const res = await nextServer.get<Note>(`/notes/${id}`, {
     headers: {
-      Cookie: `auth_token=${authCookie?.value}`,
+      Cookie: cookiesStore.toString(),
     },
-    withCredentials: true,
   });
   return res.data;
+};
+
+export const getMeServer = async (): Promise<UserLogin> => {
+  const cookiesStore = await cookies();
+
+  const { data } = await nextServer<UserLogin>("/users/me", {
+    headers: {
+      Cookie: cookiesStore.toString(),
+    },
+  });
+  return data;
 };
