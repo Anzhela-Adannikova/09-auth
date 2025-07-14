@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Profile() {
-  const user = await checkServerSession();
+  const { user } = await checkServerSession();
 
   if (!user) {
     redirect("sign-in");
