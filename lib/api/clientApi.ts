@@ -4,6 +4,27 @@ import nextServer from "./api";
 import { NewNoteData, Note } from "@/types/note";
 import { User, AuthData } from "@/types/user";
 
+export interface FetchNoteService {
+  notes: Note[];
+  totalPages: number;
+}
+
+export const fetchNotes = async (
+  page = 1,
+  query = "",
+  perPage = 12,
+  tag?: string
+): Promise<FetchNoteService> => {
+  const params: Record<string, string | number> = { page, perPage };
+  if (query) params.search = query;
+  if (tag && tag !== `All`) params.tag = tag;
+  console.log("params", params);
+  const res = await nextServer.get<FetchNoteService>(`/notes`, {
+    params,
+  });
+  return res.data;
+};
+
 export const createNote = async (noteData: NewNoteData): Promise<Note> => {
   const res = await nextServer.post<Note>("/notes", noteData);
   return res.data;

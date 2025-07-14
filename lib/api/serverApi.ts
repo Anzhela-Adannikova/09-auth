@@ -65,7 +65,7 @@ export const fetchNotes = async (
   tag?: string
 ): Promise<FetchNoteService> => {
   const cookiesStore = await cookies();
-  const authCookie = cookiesStore.get("auth_token");
+  // const authCookie = cookiesStore.get("auth_token");
 
   const params: Record<string, string | number> = { page, perPage };
   if (query) params.search = query;
@@ -73,7 +73,7 @@ export const fetchNotes = async (
 
   const res = await axios.get<FetchNoteService>(`${baseURL}/notes`, {
     headers: {
-      Cookie: `auth_token=${authCookie?.value}`,
+      Cookie: cookiesStore.toString(),
     },
     withCredentials: true,
     params,

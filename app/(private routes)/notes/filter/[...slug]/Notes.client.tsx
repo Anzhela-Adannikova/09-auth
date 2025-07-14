@@ -8,7 +8,7 @@ import NoteList from "@/components/NoteList/NoteList";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import Link from "next/link";
-import { fetchNotes, FetchNoteService } from "@/lib/api/serverApi";
+import { fetchNotes, FetchNoteService } from "@/lib/api/clientApi";
 
 interface NotesClientProps {
   initialData: FetchNoteService;
