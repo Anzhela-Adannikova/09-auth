@@ -8,14 +8,13 @@ import NoteList from "@/components/NoteList/NoteList";
 import SearchBox from "@/components/SearchBox/SearchBox";
 import Pagination from "@/components/Pagination/Pagination";
 import Link from "next/link";
-import { fetchNotes, FetchNoteService } from "@/lib/api/clientApi";
+import { fetchNotes } from "@/lib/api/clientApi";
 
 interface NotesClientProps {
-  initialData: FetchNoteService;
   tag?: string;
 }
 
-export default function NotesClient({ initialData, tag }: NotesClientProps) {
+export default function NotesClient({ tag }: NotesClientProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [debounceSearchTerm] = useDebounce(searchTerm, 1000);
@@ -25,7 +24,6 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
     queryKey: ["notes", currentPage, debounceSearchTerm, tag],
     queryFn: () => fetchNotes(currentPage, debounceSearchTerm, perPage, tag),
     placeholderData: keepPreviousData,
-    initialData,
   });
 
   const handleSearchChange = (newTerm: string) => {

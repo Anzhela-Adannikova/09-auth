@@ -1,10 +1,5 @@
-import { fetchNotesServer } from "@/lib/api/serverApi";
 import { Metadata } from "next";
 import NotesClient from "./Notes.client";
-
-// type FilteredNotesPageProps = {
-//   params: { slug: string[] };
-// };
 
 export const generateMetadata = async ({
   params,
@@ -44,7 +39,5 @@ export default async function FilteredNotesPage({
   const { slug } = await params;
   const tag = slug[0] === "All" ? undefined : slug[0];
 
-  const data = await fetchNotesServer(1, "", 12, tag);
-
-  return <NotesClient initialData={data} tag={tag} />;
+  return <NotesClient tag={tag} />;
 }

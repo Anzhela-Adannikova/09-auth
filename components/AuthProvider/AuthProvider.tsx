@@ -14,16 +14,20 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      const isValid = await checkSession();
-      if (isValid) {
-        const user = await getMe();
-        setUser(user);
-      } else {
+      try {
+        const isValid = await checkSession();
+
+        if (isValid) {
+          const user = await getMe();
+          setUser(user);
+        }
+      } catch {
         clearAuth();
       }
     };
+
     fetchSession();
-  }, [clearAuth, setUser]);
+  }, [setUser, clearAuth]);
 
   return children;
 };

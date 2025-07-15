@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 export default function NotePreviewPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  // const parseId = Number(id);
 
   const handleCloseModal = () => {
     router.back();
@@ -27,7 +26,6 @@ export default function NotePreviewPage() {
     refetchOnMount: false,
   });
 
-  // if (!id || Number.isNaN(id)) return <p>Invalid ID</p>;
   if (isLoading) return <p>Loading, please wait...</p>;
   if (isError || !note) return <p>Something went wrong.</p>;
 

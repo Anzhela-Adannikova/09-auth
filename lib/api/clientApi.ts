@@ -51,21 +51,21 @@ export const loginUser = async (data: AuthData): Promise<UserLogin> => {
   return res.data;
 };
 
-interface CheckSessionRes {
+export interface CheckSessionRes {
   message: string;
 }
 export const checkSession = async (): Promise<CheckSessionRes> => {
-  const res = await nextServer.get<CheckSessionRes>(`/auth/session`);
+  const res = await nextServer.get<CheckSessionRes>("/auth/session");
   return res.data;
 };
 
 export const getMe = async (): Promise<UserLogin> => {
-  const { data } = await nextServer<UserLogin>(`/users/me`);
-  return data;
+  const res = await nextServer.get<UserLogin>("/users/me");
+  return res.data;
 };
 
 export const logOut = async () => {
-  await nextServer.post(`/auth/logout`);
+  await nextServer.post("/auth/logout");
 };
 
 export const updateUser = async (data: {

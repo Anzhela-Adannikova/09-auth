@@ -22,7 +22,6 @@ export default function NoteDetailsClient() {
     refetchOnMount: false,
   });
 
-  // if (!id || Number.isNaN(id)) return <p>Invalid ID</p>;
   if (isLoading) return <p>Loading, please wait...</p>;
   if (isError || !note) return <p>Something went wrong.</p>;
 
