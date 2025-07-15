@@ -18,7 +18,7 @@ export const fetchNotes = async (
   const params: Record<string, string | number> = { page, perPage };
   if (query) params.search = query;
   if (tag && tag !== `All`) params.tag = tag;
-  console.log("params", params);
+
   const res = await nextServer.get<FetchNoteService>(`/notes`, {
     params,
   });

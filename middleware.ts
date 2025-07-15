@@ -17,14 +17,6 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith(route)
   );
 
-  console.log({
-    middleware: pathname,
-    isAuthRoutes: isAuthRoutes,
-    isPrivateRoute: isPrivateRoute,
-    "hasAccessToken:": !!accessToken,
-    "hasRefreshToken:": !!refreshToken,
-  });
-
   if (!accessToken) {
     if (refreshToken) {
       const data = await checkServerSession();
@@ -48,11 +40,14 @@ export async function middleware(request: NextRequest) {
         }
 
         if (isAuthRoutes)
-          return NextResponse.redirect(new URL("/", request.nextUrl.origin), {
-            headers: {
-              Cookie: cookieStore.toString(),
-            },
-          });
+          return NextResponse.redirect(
+            new URL("/profile", request.nextUrl.origin),
+            {
+              headers: {
+                Cookie: cookieStore.toString(),
+              },
+            }
+          );
 
         if (isPrivateRoute)
           return NextResponse.next({
@@ -68,7 +63,8 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
-  if (isAuthRoutes) return NextResponse.redirect(new URL("/", request.url));
+  if (isAuthRoutes)
+    return NextResponse.redirect(new URL("/profile", request.url));
   if (isPrivateRoute) return NextResponse.next();
 
   return NextResponse.next();
